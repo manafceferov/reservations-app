@@ -70,6 +70,39 @@
 
         body.dark-mode .form-control::placeholder { color: #64748b !important; opacity: 1; }
 
+        /* --- ROOM TYPE BADGES --- */
+
+        .bg-standard {
+            background: linear-gradient(135deg, #64748b, #475569) !important;
+            color: #fff !important;
+            border: none;
+        }
+
+        .bg-deluxe {
+            background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+            color: #fff !important;
+            border: none;
+        }
+
+        .bg-suite {
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+            color: #fff !important;
+            border: none;
+        }
+
+        .bg-vip {
+            background: linear-gradient(135deg, #c9a84c, #e0c46c) !important;
+            color: #0f172a !important;
+            border: none;
+            font-weight: 700;
+        }
+
+        .room-badge {
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
         /* ─── 🛠️ DAXİLİ REZERVASIYA İKONLARININ FUNKSİONAL TƏNZİMLƏNMƏSİ ─── */
         body.dark-mode input::-webkit-calendar-picker-indicator {
             opacity: 0 !important;
@@ -98,6 +131,72 @@
             background-repeat: no-repeat !important;
             background-position: right 0.75rem center !important;
             background-size: 1.1rem auto !important;
+        }
+
+        /* ─── MODAL DARK MODE FIX ─── */
+
+        body.light-mode .style-modal {
+            background-color: #ffffff !important;
+            color: #1e293b !important;
+            border: 1px solid #e2e8f0;
+        }
+
+        body.light-mode .style-modal .modal-header,
+        body.light-mode .style-modal .modal-footer {
+            border-color: #e2e8f0 !important;
+        }
+
+        body.light-mode .reservation-note {
+            background-color: #f8fafc;
+            border-left: 3px solid #c9a84c;
+            color: #1e293b;
+        }
+
+        body.light-mode .reservation-menu {
+            background: rgba(0,0,0,0.02);
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+
+        body.light-mode .reservation-item {
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        body.light-mode .total-price {
+            border-top: 2px dashed rgba(0,0,0,0.15);
+        }
+
+        body.dark-mode .style-modal {
+            background-color: #1e293b !important;
+            color: #f1f5f9 !important;
+            border: 1px solid #334155;
+        }
+
+        body.dark-mode .style-modal .modal-header,
+        body.dark-mode .style-modal .modal-footer {
+            border-color: #334155 !important;
+        }
+
+        body.dark-mode .reservation-note {
+            background-color: #0f172a;
+            border-left: 3px solid #c9a84c;
+            color: #f1f5f9;
+        }
+
+        body.dark-mode .reservation-menu {
+            background: #0f172a;
+            border: 1px solid #334155;
+        }
+
+        body.dark-mode .reservation-item {
+            border-bottom: 1px solid #334155;
+        }
+
+        body.dark-mode .total-price {
+            border-top: 2px dashed #475569;
+        }
+
+        body.dark-mode .btn-close {
+            filter: invert(1);
         }
     </style>
 </head>

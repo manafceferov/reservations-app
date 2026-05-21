@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/header :: head('Otaqlar')}"></head>
-<body>
-<nav th:replace="~{fragments/header :: navbar}"></nav>
+<body> <nav th:replace="~{fragments/header :: navbar}"></nav>
 
 <div class="container">
     <h4 class="section-title mb-4">🛏️ Otaqlar</h4>
 
-    <!-- Axtarış formu -->
     <div class="card p-4 mb-4">
         <h6 class="fw-bold mb-3">Mövcud otaqları yoxla</h6>
         <form th:action="@{/web/rooms/available}" method="get" class="row g-3">
@@ -35,7 +33,13 @@
             <div class="card p-4 h-100">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <h5 class="fw-bold mb-0" th:text="'Otaq ' + ${room.roomNumber}"></h5>
-                    <span class="badge badge-gold" th:text="${room.roomType}"></span>
+                    <span class="badge room-badge"
+                          th:classappend="${room.roomType == 'STANDARD'} ? 'bg-standard' :
+                                         (${room.roomType == 'DELUXE'} ? 'bg-deluxe' :
+                                         (${room.roomType == 'SUITE'} ? 'bg-suite' :
+                                         (${room.roomType == 'VIP'} ? 'bg-vip' : 'badge-gold')))"
+                          th:text="${room.roomType}">
+                    </span>
                 </div>
                 <p class="text-muted small" th:text="${room.description}"></p>
                 <div class="mt-auto">
