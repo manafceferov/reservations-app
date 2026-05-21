@@ -41,7 +41,6 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setPhoneNumber(dto.getPhoneNumber());
         user.setRole(Role.GUEST);
-
         return userMapper.toResponseDto(userRepository.save(user));
     }
 

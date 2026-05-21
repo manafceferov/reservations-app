@@ -22,9 +22,12 @@
                           th:classappend="${r.status == 'CONFIRMED'} ? 'bg-success' : (${r.status == 'CANCELLED'} ? 'bg-danger' : 'bg-warning text-dark')"
                           th:text="${r.status}"></span>
                 </div>
-                <p class="text-muted small mb-1"><i class="bi bi-calendar-check"></i> Giriş: <span th:text="${r.checkIn}"></span></p>
-                <p class="text-muted small mb-1"><i class="bi bi-calendar-x"></i> Çıxış: <span th:text="${r.checkOut}"></span></p>
-                <p class="text-muted small mb-1"><i class="bi bi-people"></i> Qonaq: <span th:text="${r.guestCount}"></span></p>
+                <p class="text-muted small mb-1"><i class="bi bi-calendar-check"></i> Giriş: <span
+                        th:text="${r.checkIn}"></span></p>
+                <p class="text-muted small mb-1"><i class="bi bi-calendar-x"></i> Çıxış: <span
+                        th:text="${r.checkOut}"></span></p>
+                <p class="text-muted small mb-1"><i class="bi bi-people"></i> Qonaq: <span
+                        th:text="${r.guestCount}"></span></p>
                 <p class="fw-bold text-warning mt-2" th:text="'Cəmi: ₼' + ${r.totalPrice}"></p>
                 <form th:if="${r.status == 'CONFIRMED'}"
                       th:action="@{/web/rooms/reservations/{id}/cancel(id=${r.id})}" method="post" class="mt-2">

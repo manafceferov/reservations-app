@@ -28,27 +28,35 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Qonaq sayı</label>
-                                <input type="number" th:field="*{guestCount}" class="form-control" value="1" min="1" max="10" required>
+                                <input type="number" th:field="*{guestCount}" class="form-control" value="1" min="1"
+                                       max="10" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Qeyd</label>
-                                <textarea th:field="*{notes}" class="form-control" rows="4" placeholder="Xüsusi istək və ya allergiyanız varsa qeyd edin..."></textarea>
+                                <textarea th:field="*{notes}" class="form-control" rows="4"
+                                          placeholder="Xüsusi istək və ya allergiyanız varsa qeyd edin..."></textarea>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <h5 class="fw-bold mb-3 text-warning">🍔 Menydan Ön Sifariş (Könüllü)</h5>
-                            <p class="text-muted small">Masanıza əyləşdiyiniz an yeməklərinizin hazır olmasını istəyirsinizsə, öncədən seçə bilərsiniz.</p>
+                            <p class="text-muted small">Masanıza əyləşdiyiniz an yeməklərinizin hazır olmasını
+                                istəyirsinizsə, öncədən seçə bilərsiniz.</p>
 
-                            <div class="overflow-auto pe-2" style="max-height: 320px; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; padding: 10px;">
-                                <div th:each="item : ${menuItems}" class="form-check d-flex align-items-center justify-content-between mb-2 p-2 rounded" style="background: rgba(0,0,0,0.02); border-bottom: 1px solid rgba(0,0,0,0.05);">
+                            <div class="overflow-auto pe-2"
+                                 style="max-height: 320px; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; padding: 10px;">
+                                <div th:each="item : ${menuItems}"
+                                     class="form-check d-flex align-items-center justify-content-between mb-2 p-2 rounded"
+                                     style="background: rgba(0,0,0,0.02); border-bottom: 1px solid rgba(0,0,0,0.05);">
                                     <div>
                                         <input class="form-check-input ms-0 me-2" type="checkbox"
                                                th:value="${item.id}"
                                                th:field="*{menuItemIds}"
                                                th:id="'item-' + ${item.id}">
-                                        <label class="form-check-label fw-semibold" th:for="'item-' + ${item.id}" th:text="${item.name}">Yemək adı</label>
-                                        <small class="d-block text-muted" th:text="${item.category}" style="font-size: 0.75rem;">Kateqoriya</small>
+                                        <label class="form-check-label fw-semibold" th:for="'item-' + ${item.id}"
+                                               th:text="${item.name}">Yemək adı</label>
+                                        <small class="d-block text-muted" th:text="${item.category}"
+                                               style="font-size: 0.75rem;">Kateqoriya</small>
                                     </div>
                                     <span class="badge bg-success" th:text="${item.price} + ' AZN'">0.00 AZN</span>
                                 </div>
@@ -59,7 +67,9 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100 mt-4 py-2 fs-5">Rezervasiyanı və Sifarişi Təsdiqlə</button>
+                    <button type="submit" class="btn btn-primary w-100 mt-4 py-2 fs-5">Rezervasiyanı və Sifarişi
+                        Təsdiqlə
+                    </button>
                 </form>
             </div>
         </div>

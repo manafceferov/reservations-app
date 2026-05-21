@@ -64,7 +64,6 @@ public class TableService {
             table.setLocation(dto.getLocation());
             return table;
         }).toList();
-
         return tableRepository.saveAll(tables)
                 .stream().map(tableMapper::toResponseDto).toList();
     }
@@ -110,7 +109,6 @@ public class TableService {
                     .toList();
             reservation.setMenuItems(items);
         }
-
         return tableMapper.toReservationResponseDto(reservationRepository.save(reservation));
     }
 
@@ -131,7 +129,6 @@ public class TableService {
 
         if (!reservation.getUser().getId().equals(userId))
             throw new ResourceNotFoundException("Bu rezervasiya sizə aid deyil");
-
         reservation.setStatus(ReservationStatus.CANCELLED);
         return tableMapper.toReservationResponseDto(reservationRepository.save(reservation));
     }

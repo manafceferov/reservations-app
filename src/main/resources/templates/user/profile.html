@@ -10,10 +10,13 @@
             <div class="card p-4 mb-5">
                 <h4 class="fw-bold mb-4 text-center section-title">Profil Məlumatları</h4>
 
-                <div th:if="${message != null}" class="alert alert-success text-center" th:text="${message}" id="successMessage"></div>
-                <div th:if="${error != null}" class="alert alert-danger text-center" th:text="${error}" id="errorMessage"></div>
+                <div th:if="${message != null}" class="alert alert-success text-center" th:text="${message}"
+                     id="successMessage"></div>
+                <div th:if="${error != null}" class="alert alert-danger text-center" th:text="${error}"
+                     id="errorMessage"></div>
 
-                <form class="needs-validation" th:action="@{/web/profile/update}" th:object="${userEditDto}" method="post" novalidate>
+                <form class="needs-validation" th:action="@{/web/profile/update}" th:object="${userEditDto}"
+                      method="post" novalidate>
 
                     <div class="mb-3">
                         <label for="firstName" class="form-label">Ad</label>
@@ -53,7 +56,6 @@
 <div th:replace="~{fragments/footer :: scripts}"></div>
 
 <script>
-    // Bootstrap validation scripti
     (function () {
         'use strict';
         const forms = document.querySelectorAll('.needs-validation');
@@ -68,7 +70,6 @@
         });
     })();
 
-    // Mesajların 3 saniyə sonra təmizlənməsi
     setTimeout(function () {
         const success = document.getElementById('successMessage');
         const error = document.getElementById('errorMessage');

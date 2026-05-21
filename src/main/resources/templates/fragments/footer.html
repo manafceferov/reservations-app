@@ -14,8 +14,6 @@
             const body = document.body;
             const toggleBtn = document.getElementById("themeToggle");
             const themeIcon = document.getElementById("theme-icon");
-
-            // Səhifə yüklənəndə əvvəlki rejimi yoxla
             const savedTheme = localStorage.getItem("theme") || "light";
             body.classList.add(savedTheme + "-mode");
 

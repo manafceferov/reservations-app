@@ -24,8 +24,10 @@
                               th:text="${r.status}">STATUS</span>
                     </div>
 
-                    <p class="text-muted small mb-1"><i class="bi bi-calendar me-1"></i> <span th:text="${r.reservationDate}"></span></p>
-                    <p class="text-muted small mb-3"><i class="bi bg-clock me-1"></i> Sifariş Tarixi: <span th:text="${r.reservationTime}"></span></p>
+                    <p class="text-muted small mb-1"><i class="bi bi-calendar me-1"></i> <span
+                            th:text="${r.reservationDate}"></span></p>
+                    <p class="text-muted small mb-3"><i class="bi bg-clock me-1"></i> Sifariş Tarixi: <span
+                            th:text="${r.reservationTime}"></span></p>
                 </div>
 
                 <div class="mt-auto pt-2">
@@ -39,19 +41,25 @@
                           th:action="@{/web/tables/reservations/{id}/cancel(id=${r.id})}" method="post" class="m-0">
                         <button type="submit" class="btn btn-outline-danger btn-sm w-100">Rezervasiyanı Ləğv Et</button>
                     </form>
-                    <button th:if="${r.status == 'CANCELLED'}" class="btn btn-sm btn-secondary w-100" disabled>Ləğv Edilib</button>
+                    <button th:if="${r.status == 'CANCELLED'}" class="btn btn-sm btn-secondary w-100" disabled>Ləğv
+                        Edilib
+                    </button>
                 </div>
             </div>
 
             <div class="modal fade" th:id="'detailModal-' + ${r.id}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content style-modal" style="border-radius: 14px; background-color: var(--bs-body-bg); color: var(--bs-body-color);">
+                    <div class="modal-content style-modal"
+                         style="border-radius: 14px; background-color: var(--bs-body-bg); color: var(--bs-body-color);">
                         <div class="modal-header" style="border-bottom: 1px solid rgba(0,0,0,0.1);">
-                            <h5 class="modal-title fw-bold text-warning"><i class="bi bi-receipt me-2"></i> Rezervasiya Detalları</h5>
-                            <button type="button" class="btn-close" data-bs-submit="modal" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <h5 class="modal-title fw-bold text-warning"><i class="bi bi-receipt me-2"></i> Rezervasiya
+                                Detalları</h5>
+                            <button type="button" class="btn-close" data-bs-submit="modal" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="d-flex justify-content-between mb-3 pb-2" style="border-bottom: 1px dashed rgba(0,0,0,0.1);">
+                            <div class="d-flex justify-content-between mb-3 pb-2"
+                                 style="border-bottom: 1px dashed rgba(0,0,0,0.1);">
                                 <span class="fw-bold fs-5" th:text="'Masa №' + ${r.tableNumber}">Masa</span>
                                 <span class="badge fs-6"
                                       th:classappend="${r.status == 'CONFIRMED'} ? 'bg-success' : 'bg-danger'"
@@ -59,23 +67,31 @@
                             </div>
 
                             <div class="mb-3">
-                                <p class="mb-2"><strong>📅 Tarix:</strong> <span th:text="${r.reservationDate}"></span></p>
-                                <p class="mb-2"><strong>⏰ Vaxt:</strong> <span th:text="${r.reservationTime}"></span></p>
-                                <p class="mb-2"><strong>👥 Qonaq Sayı:</strong> <span th:text="${r.guestCount}"></span> nəfər</p>
+                                <p class="mb-2"><strong>📅 Tarix:</strong> <span th:text="${r.reservationDate}"></span>
+                                </p>
+                                <p class="mb-2"><strong>⏰ Vaxt:</strong> <span th:text="${r.reservationTime}"></span>
+                                </p>
+                                <p class="mb-2"><strong>👥 Qonaq Sayı:</strong> <span th:text="${r.guestCount}"></span>
+                                    nəfər</p>
                             </div>
 
                             <div class="mb-4" th:if="${r.notes != null and !#strings.isEmpty(r.notes)}">
                                 <strong class="d-block mb-1 text-warning">📝 Xüsusi Qeyd:</strong>
-                                <div class="p-2 rounded bg-light text-dark text-start small" style="border-left: 3px solid #c9a84c;">
+                                <div class="p-2 rounded bg-light text-dark text-start small"
+                                     style="border-left: 3px solid #c9a84c;">
                                     <p class="mb-0" th:text="${r.notes}"></p>
                                 </div>
                             </div>
 
                             <div>
-                                <strong class="d-block mb-2 text-warning"><i class="bi bi-egg-fried"></i> Ön Sifariş Edilmiş Yeməklər:</strong>
+                                <strong class="d-block mb-2 text-warning"><i class="bi bi-egg-fried"></i> Ön Sifariş
+                                    Edilmiş Yeməklər:</strong>
 
-                                <div th:if="${r.menuItems != null and !#lists.isEmpty(r.menuItems)}" class="p-3 rounded" style="background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.08);">
-                                    <div th:each="item : ${r.menuItems}" class="d-flex justify-content-between align-items-center mb-2 pb-2" style="border-bottom: 1px solid rgba(0,0,0,0.04);">
+                                <div th:if="${r.menuItems != null and !#lists.isEmpty(r.menuItems)}" class="p-3 rounded"
+                                     style="background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.08);">
+                                    <div th:each="item : ${r.menuItems}"
+                                         class="d-flex justify-content-between align-items-center mb-2 pb-2"
+                                         style="border-bottom: 1px solid rgba(0,0,0,0.04);">
                                         <div>
                                             <span class="fw-semibold d-block" th:text="${item.name}">Yemək adı</span>
                                             <small class="text-muted" th:text="${item.category}">Kateqoriya</small>
@@ -83,13 +99,15 @@
                                         <span class="badge bg-success" th:text="${item.price} + ' AZN'">0.00 AZN</span>
                                     </div>
 
-                                    <div class="d-flex justify-content-between align-items-center mt-3 pt-2 fw-bold text-warning" style="border-top: 2px dashed rgba(0,0,0,0.15);">
+                                    <div class="d-flex justify-content-between align-items-center mt-3 pt-2 fw-bold text-warning"
+                                         style="border-top: 2px dashed rgba(0,0,0,0.15);">
                                         <span><i class="bi bi-wallet2 me-1"></i> Toplam Məbləğ:</span>
                                         <span class="fs-5" th:text="${#aggregates.sum(r.menuItems.![price])} + ' AZN'">0.00 AZN</span>
                                     </div>
                                 </div>
 
-                                <div th:if="${r.menuItems == null or #lists.isEmpty(r.menuItems)}" class="text-center text-muted py-2 small">
+                                <div th:if="${r.menuItems == null or #lists.isEmpty(r.menuItems)}"
+                                     class="text-center text-muted py-2 small">
                                     <i class="bi bi-info-circle me-1"></i> Bu rezervasiya üçün ön sifariş edilməyib.
                                 </div>
                             </div>

@@ -7,7 +7,6 @@
 <div class="container">
     <h4 class="section-title mb-4">🍽️ Restoran Masaları</h4>
 
-    <!-- Axtarış formu -->
     <div class="card p-4 mb-4">
         <h6 class="fw-bold mb-3">Mövcud masaları yoxla</h6>
         <form th:action="@{/web/tables/available}" method="get" class="row g-3">
@@ -34,8 +33,10 @@
         <div class="col-md-4" th:each="table : ${tables}">
             <div class="card p-4 h-100">
                 <h5 class="fw-bold mb-1" th:text="'Masa №' + ${table.tableNumber}"></h5>
-                <p class="text-muted small mb-1"><i class="bi bi-geo-alt"></i> <span th:text="${table.location}"></span></p>
-                <p class="text-muted small"><i class="bi bi-people"></i> <span th:text="${table.capacity}"></span> nəfər</p>
+                <p class="text-muted small mb-1"><i class="bi bi-geo-alt"></i> <span th:text="${table.location}"></span>
+                </p>
+                <p class="text-muted small"><i class="bi bi-people"></i> <span th:text="${table.capacity}"></span> nəfər
+                </p>
                 <div class="mt-auto">
                     <a th:href="@{/web/tables/reserve/{id}(id=${table.id})}" class="btn btn-primary w-100">Rezerv et</a>
                 </div>

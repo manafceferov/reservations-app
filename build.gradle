@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'jacoco'
     id 'org.springframework.boot' version '3.5.14'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'org.jetbrains.kotlin.jvm' version '1.9.25'
@@ -64,6 +65,25 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+// Jacoco Konfiqurasiyası
+jacoco {
+    toolVersion = "0.8.12"
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        html.required = true
+        xml.required = true
+        csv.required = false
+    }
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
 compileKotlin {
     kotlinOptions {
         jvmTarget = '21'
@@ -75,8 +95,4 @@ compileJava {
     options.compilerArgs += [
             '-Amapstruct.defaultComponentModel=spring'
     ]
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
 }
