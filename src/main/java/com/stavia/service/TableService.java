@@ -73,26 +73,45 @@ public class TableService {
                 .stream().map(tableMapper::toResponseDto).toList();
     }
 
-    public List<TableResponseDto> getAvailable(String date, String time) {
+    public List<TableResponseDto> getAvailable(String date,
+                                               String time
+    ) {
         LocalDate localDate = LocalDate.parse(date);
         LocalTime localTime = LocalTime.parse(time);
         return tableRepository.findAvailableTables(localDate, localTime)
                 .stream().map(tableMapper::toResponseDto).toList();
     }
 
-    @Transactional
-    public TableReservationResponseDto reserve(TableReservationCreateDto dto, Long userId) {
-        User user = userService.findById(userId);
-        RestaurantTable table = tableRepository.findById(dto.getTableId())
+    private RestaurantTable findTableById(Long tableId) {
+        return tableRepository.findById(tableId)
                 .orElseThrow(() -> new ResourceNotFoundException("Masa tapılmadı"));
+    }
 
-        LocalDate date = LocalDate.parse(dto.getReservationDate());
-        LocalTime time = LocalTime.parse(dto.getReservationTime());
-
-        List<RestaurantTable> available = tableRepository.findAvailableTables(date, time);
-        if (available.stream().noneMatch(t -> t.getId().equals(table.getId())))
+    private void validateTableAvailability(RestaurantTable table,
+                                           LocalDate date,
+                                           LocalTime time
+    ) {
+        boolean isAvailable = tableRepository.findAvailableTables(date, time)
+                .stream()
+                .anyMatch(t -> t.getId().equals(table.getId()));
+        if (!isAvailable)
             throw new NotAvailableException("Bu masa seçilmiş vaxt üçün mövcud deyil");
+    }
 
+    private List<MenuItem> resolveMenuItems(List<Long> menuItemIds) {
+        if (menuItemIds == null || menuItemIds.isEmpty()) return List.of();
+        return menuItemIds.stream()
+                .map(id -> menuItemRepository.findById(id).orElse(null))
+                .filter(Objects::nonNull)
+                .toList();
+    }
+
+    private TableReservation buildReservation(User user,
+                                              RestaurantTable table,
+                                              TableReservationCreateDto dto,
+                                              LocalDate date,
+                                              LocalTime time
+    ) {
         TableReservation reservation = new TableReservation();
         reservation.setUser(user);
         reservation.setTable(table);
@@ -101,18 +120,26 @@ public class TableService {
         reservation.setGuestCount(dto.getGuestCount());
         reservation.setNotes(dto.getNotes());
         reservation.setStatus(ReservationStatus.CONFIRMED);
+        reservation.setMenuItems(resolveMenuItems(dto.getMenuItemIds()));
+        return reservation;
+    }
 
-        if (dto.getMenuItemIds() != null && !dto.getMenuItemIds().isEmpty()) {
-            List<MenuItem> items = dto.getMenuItemIds().stream()
-                    .map(id -> menuItemRepository.findById(id).orElse(null))
-                    .filter(Objects::nonNull)
-                    .toList();
-            reservation.setMenuItems(items);
-        }
+    @Transactional
+    public TableReservationResponseDto reserve(TableReservationCreateDto dto,
+                                               Long userId
+    ) {
+        User user = userService.findById(userId);
+        RestaurantTable table = findTableById(dto.getTableId());
+        LocalDate date = LocalDate.parse(dto.getReservationDate());
+        LocalTime time = LocalTime.parse(dto.getReservationTime());
+        validateTableAvailability(table, date, time);
+        TableReservation reservation = buildReservation(user, table, dto, date, time);
         return tableMapper.toReservationResponseDto(reservationRepository.save(reservation));
     }
 
-    public Page<TableReservationResponseDto> getUserReservations(Long userId, Pageable pageable) {
+    public Page<TableReservationResponseDto> getUserReservations(Long userId,
+                                                                 Pageable pageable
+    ) {
         return reservationRepository.findAllByUserIdAndDeletedFalse(userId, pageable)
                 .map(tableMapper::toReservationResponseDto);
     }
@@ -123,7 +150,9 @@ public class TableService {
     }
 
     @Transactional
-    public TableReservationResponseDto cancelReservation(Long reservationId, Long userId) {
+    public TableReservationResponseDto cancelReservation(Long reservationId,
+                                                         Long userId
+    ) {
         TableReservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new ResourceNotFoundException("Rezervasiya tapılmadı"));
 

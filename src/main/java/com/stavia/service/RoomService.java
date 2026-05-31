@@ -97,38 +97,60 @@ public class RoomService {
         roomRepository.save(room);
     }
 
-    @Transactional
-    public RoomReservationResponseDto reserve(RoomReservationCreateDto dto, Long userId) {
-        User user = userService.findById(userId);
-        Room room = findById(dto.getRoomId());
-
-        LocalDate checkIn = LocalDate.parse(dto.getCheckIn());
-        LocalDate checkOut = LocalDate.parse(dto.getCheckOut());
-
+    private void validateDates(LocalDate checkIn,
+                               LocalDate checkOut
+    ) {
         if (!checkOut.isAfter(checkIn))
             throw new NotAvailableException("Çıxış tarixi giriş tarixindən sonra olmalıdır");
+    }
 
-        List<Room> available = roomRepository.findAvailableRooms(checkIn, checkOut);
-        if (available.stream().noneMatch(r -> r.getId().equals(room.getId())))
+    private void validateRoomAvailability(Room room,
+                                          LocalDate checkIn,
+                                          LocalDate checkOut
+    ) {
+        boolean isAvailable = roomRepository.findAvailableRooms(checkIn, checkOut)
+                .stream()
+                .anyMatch(r -> r.getId().equals(room.getId()));
+        if (!isAvailable)
             throw new NotAvailableException("Bu otaq seçilmiş tarixlər üçün mövcud deyil");
+    }
 
+    private RoomReservation buildReservation(User user,
+                                             Room room,
+                                             RoomReservationCreateDto dto,
+                                             LocalDate checkIn,
+                                             LocalDate checkOut
+    ) {
         long nights = ChronoUnit.DAYS.between(checkIn, checkOut);
-        double totalPrice = nights * room.getPricePerNight();
-
         RoomReservation reservation = new RoomReservation();
         reservation.setUser(user);
         reservation.setRoom(room);
         reservation.setCheckIn(checkIn);
         reservation.setCheckOut(checkOut);
         reservation.setGuestCount(dto.getGuestCount());
-        reservation.setTotalPrice(totalPrice);
+        reservation.setTotalPrice(nights * room.getPricePerNight());
         reservation.setNotes(dto.getNotes());
         reservation.setStatus(ReservationStatus.CONFIRMED);
+        return reservation;
+    }
 
+    @Transactional
+    public RoomReservationResponseDto reserve(RoomReservationCreateDto dto,
+                                              Long userId
+    ) {
+        User user = userService.findById(userId);
+        Room room = findById(dto.getRoomId());
+        LocalDate checkIn = LocalDate.parse(dto.getCheckIn());
+        LocalDate checkOut = LocalDate.parse(dto.getCheckOut());
+        validateDates(checkIn, checkOut);
+        validateRoomAvailability(room, checkIn, checkOut);
+        RoomReservation reservation = buildReservation(user, room, dto, checkIn, checkOut);
         return roomMapper.toReservationResponseDto(reservationRepository.save(reservation));
     }
 
-    public Page<RoomReservationResponseDto> getUserReservations(Long userId, Pageable pageable) {
+    public Page<RoomReservationResponseDto> getUserReservations(Long userId,
+                                                                Pageable pageable
+    ) {
         return reservationRepository.findAllByUserIdAndDeletedFalse(userId, pageable)
                 .map(roomMapper::toReservationResponseDto);
     }
@@ -139,7 +161,9 @@ public class RoomService {
     }
 
     @Transactional
-    public RoomReservationResponseDto cancelReservation(Long reservationId, Long userId) {
+    public RoomReservationResponseDto cancelReservation(Long reservationId,
+                                                        Long userId
+    ) {
         RoomReservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new ResourceNotFoundException("Rezervasiya tapılmadı"));
 
