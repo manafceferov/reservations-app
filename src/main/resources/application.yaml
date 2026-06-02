@@ -3,9 +3,10 @@ spring:
     name: stavia
 
   datasource:
-    url: jdbc:postgresql://localhost:5433/stavia
-    username: quizuser
-    password: quizpassword
+    # URL-i birbaşa bura yazmaq əvəzinə, Render-dəki dəyişəndən oxuması üçün aşağıdakı formatı istifadə et
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -25,11 +26,11 @@ spring:
       password: admin
 
 jwt:
-  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  secret: ${JWT_SECRET}
   expiration: 86400000
 
 server:
-  port: 8181
+  port: ${PORT:8181}
 
 springdoc:
   swagger-ui:
