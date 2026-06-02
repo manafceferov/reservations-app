@@ -1,12 +1,12 @@
-# 1. Build mühiti
+# Build mühiti
 FROM gradle:8.5-jdk21-alpine AS build
-COPY . /app
-WORKDIR /app
-# İcazəni təmin etmək üçün
-RUN chmod +x gradlew
-RUN ./gradlew clean build -DskipTests
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+# Gradle wrapper-ə icazə veririk və build-i işə salırıq
+RUN chmod +x gradlew && ./gradlew clean build -x test
 
-# 2. Çalışdırma mühiti
+# Run mühiti
 FROM eclipse-temurin:21-jre-alpine
-COPY --from=build /app/build/libs/*.jar app.jar
+# Build qovluğundan yaradılmış jar faylını kopyalayırıq
+COPY --from=build /home/gradle/src/build/libs/*.jar app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
